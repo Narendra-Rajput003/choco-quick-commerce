@@ -1,5 +1,7 @@
 # Choco Commerce
 
+![Choco Commerce](https://res.cloudinary.com/dnrusfidy/image/upload/v1737041730/pdib5qnrjwn4pjn6xffi.png)
+
 A comprehensive e-commerce platform built with Next.js, Drizzle ORM, NextAuth, Cryptomus, Zustand, and Zod.  This project features admin and customer roles, crypto payment acceptance, and robust data management.
 
 ## Features
@@ -53,8 +55,8 @@ A comprehensive e-commerce platform built with Next.js, Drizzle ORM, NextAuth, C
 1.  **Ensure Dependencies are Installed:** Make sure you have Node.js and npm (or yarn) installed on your system.
 2.  **Environment Variables:**  Create a `.env` file in the root directory of the project.  Copy the contents from `.env.example` and fill in the required values for your database connection and any API keys.
 3.  **Database Setup:**
-    *   **Generate Schema:** Run `npm run db:generate` to generate the database schema based on your Drizzle ORM configuration.
-    *   **Run Migrations:** Run `npm run db:run` to apply any pending database migrations.  This will create the necessary tables in your PostgreSQL database.
+     *   **Generate Schema:** Run `npm run db:generate` to generate the database schema based on your Drizzle ORM configuration.
+     *   **Run Migrations:** Run `npm run db:run` to apply any pending database migrations.  This will create the necessary tables in your PostgreSQL database.
 4.  **Start Development Server:** Run `npm run dev` to start the Next.js development server.  This will launch the application in your browser.
 
 ## Usage

@@ -2,17 +2,40 @@ import GoogleProvider from 'next-auth/providers/google';
 import { db } from '../db/db';
 import { users } from '../db/schema';
 import { AuthOptions } from 'next-auth';
+import { z } from 'zod';
+
+// Validate environment variables
+const envSchema = z.object({
+    GOOGLE_CLIENT_ID: z.string(),
+    GOOGLE_CLIENT_SECRET: z.string(),
+});
+
+const env = envSchema.parse(process.env);
+
+interface GoogleProfile {
+    given_name: string;
+    family_name: string;
+    email: string;
+    sub: string;
+    picture: string;
+}
+
+interface UserData {
+    fname: string;
+    lname: string;
+    email: string;
+    provider: string;
+    externalId: string;
+    image: string;
+}
 
 export const authOptions: AuthOptions = {
     providers: [
         GoogleProvider({
-            clientId: process.env.GOOGLE_CLIENT_ID as string,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-            async profile(profile, token: any) {
-                console.log('profile', profile);
-                console.log('tokens', token);
-
-                const data = {
+            clientId: env.GOOGLE_CLIENT_ID,
+            clientSecret: env.GOOGLE_CLIENT_SECRET,
+            async profile(profile: GoogleProfile, token: any) {
+                const data: UserData = {
                     fname: profile.given_name,
                     lname: profile.family_name,
                     email: profile.email,
@@ -35,17 +58,19 @@ export const authOptions: AuthOptions = {
                         role: user[0].role,
                     };
                 } catch (err) {
-                    console.log(err);
-                    return {
-                        id: '',
-                    };
+                    console.error('Database error:', err);
+                    throw new Error('Failed to create or update user');
                 }
             },
         }),
     ],
     callbacks: {
-        session(data: any) {
-            return data;
+        session({ session, token }: { session: any; token: any }) {
+            if (token) {
+                session.user.id = token.id;
+                session.user.role = token.role;
+            }
+            return session;
         },
         jwt({ token, user }: { token: any; user: any }) {
             if (user) {
