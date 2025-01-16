@@ -67,6 +67,3 @@ This project provides separate interfaces for administrators and customers.  The
 
 Contributions are welcome! Please open an issue or submit a pull request.
 
-## License
-
-[Specify License]
